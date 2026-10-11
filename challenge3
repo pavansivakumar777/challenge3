@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main() {
+    // Variable declarations
+    double purchase_amount, distance;
+    char customer_type;
+    double discount = 0.0;
+    double delivery_charge = 0.0;
+    double final_payable = 0.0;
+
+    // 1. Get User Inputs
+    printf("Enter purchase amount ($): ");
+    scanf("%lf", &purchase_amount);
+
+    printf("Enter customer type (R for Regular, P for Premium): ");
+    scanf(" %c", &customer_type); // Note the space before %c to clear any leftover newline character
+
+    printf("Enter delivery distance (km): ");
+    scanf("%lf", &distance);
+
+    // 2. Calculate Discount Logic
+    // Premium customers get a 10% discount if spending over $100, otherwise 5%
+    // Regular customers get a 5% discount if spending over $100, otherwise 0%
+    if (customer_type == 'P' || customer_type == 'p') {
+        if (purchase_amount > 100.0) {
+            discount = purchase_amount * 0.10; // 10% discount
+        } else {
+            discount = purchase_amount * 0.05; // 5% discount
+        }
+    } else if (customer_type == 'R' || customer_type == 'r') {
+        if (purchase_amount > 100.0) {
+            discount = purchase_amount * 0.05; // 5% discount
+        } else {
+            discount = 0.0; // No discount
+        }
+    } else {
+        printf("Warning: Invalid customer type entered. Assuming Regular.\n");
+    }
+
+    // 3. Calculate Delivery Charge Logic
+    // Free delivery under 5km. $5 flat rate between 5-15km. $10 flat rate above 15km.
+    if (distance <= 5.0) {
+        delivery_charge = 0.0; // Free delivery
+    } else if (distance > 5.0 && distance <= 15.0) {
+        delivery_charge = 5.0;
+    } else {
+        delivery_charge = 10.0;
+    }
+
+    // 4. Calculate Final Payable Amount
+    final_payable = purchase_amount - discount + delivery_charge;
+
+    // 5. Display Breakdown and Results
+    printf("\n--- Bill Summary ---\n");
+    printf("Original Purchase Amount: $%.2lf\n", purchase_amount);
+    printf("Discount Applied:        -$%.2lf\n", discount);
+    printf("Delivery Charge:         +$%.2lf\n", delivery_charge);
+    printf("---------------------\n");
+    printf("Final Payable Amount:     $%.2lf\n", final_payable);
+
+    return 0;
+}
